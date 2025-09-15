@@ -54,6 +54,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": ["localhost","visualizer.ritik.fyi"]
+          },
           "configurations": {
             "production": {
               "buildTarget": "objectVisualizer:build:production"
