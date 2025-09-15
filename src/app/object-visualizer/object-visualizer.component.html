@@ -1,0 +1,33 @@
+<!-- <ng-container *ngIf="!isObject(node)">{{node | json}}</ng-container> -->
+<ng-container [ngSwitch]="true">
+  <!-- String nodes -->
+  <li *ngSwitchCase="isString(node)" class="tree-label">
+    - {{ node }}
+  </li>
+  
+  <ng-container *ngSwitchCase="isObject(node)">
+    <ng-container *ngFor="let key of node | keyvalue">
+      <li class="tree-branch">
+        <span class="tree-label">- {{ key.key }}</span>
+        <ul *ngIf="isIterable(key.value)" class="tree-children" [attr.aria-level]="level + 1">
+          <app-object-visualizer 
+            *ngFor="let child of $any(key.value)" 
+            [node]="child" 
+            [level]="level + 1">
+          </app-object-visualizer>
+        </ul>
+          <app-object-visualizer *ngIf="!isIterable(key.value)" 
+            [node]="key.value" 
+            [level]="level + 1">
+          </app-object-visualizer>
+      </li>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="isArray(node)">
+    <app-object-visualizer 
+      *ngFor="let child of node" 
+      [node]="child" 
+      [level]="level + 1">
+    </app-object-visualizer>
+  </ng-container>
+</ng-container>
